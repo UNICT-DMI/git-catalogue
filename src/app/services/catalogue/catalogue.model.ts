@@ -1,5 +1,4 @@
 export interface Config {
-  organization: string;
   page: number;
   perPage: number;
   pageSize: number;
@@ -10,4 +9,3 @@ export interface Tab {
   topic?: string;
   org?: string;
 }
-
