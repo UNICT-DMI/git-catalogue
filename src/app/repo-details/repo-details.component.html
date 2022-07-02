@@ -18,7 +18,6 @@
 
   <div class="row">
     <div class="col-12 col-md-8">
-      <!--<markdown [src]="'https://raw.githubusercontent.com/' + data.repo.full_name + '/master/README.md'"></markdown>-->
       <markdown>
         {{ data.readme | emojiFixup }}
       </markdown>
@@ -58,7 +57,7 @@
           <li>
             <fa-icon [icon]="faClock"></fa-icon> Last update: <span class="float-right">{{ data.repo.updated_at | amTimeAgo }}</span>
           </li>
-          <li *ngIf="data.repo.license">
+          <li *ngIf="data.repo?.license">
             <fa-icon [icon]="faBalanceScale"></fa-icon> License: <span class="float-right">{{ data.repo.license.spdx_id }}</span>
           </li>
         </ul>

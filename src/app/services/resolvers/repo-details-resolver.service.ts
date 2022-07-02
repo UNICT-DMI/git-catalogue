@@ -15,17 +15,17 @@ export type RepoDetailsData = {
 })
 export class RepoDetailsResolverService implements Resolve<RepoDetailsData> {
 
-  constructor( private svc: CatalogueService ) { }
+  constructor( private readonly catalogueService: CatalogueService ) { }
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): RepoDetailsData | Observable<RepoDetailsData> | Promise<RepoDetailsData> {
     const id = route.params.id;
 
-    const repo$ = this.svc.getLocalRepo(id);
+    const repo$ = this.catalogueService.getLocalRepo(id);
     
     return repo$.pipe(
       switchMap( (repo) => forkJoin({
         repo: of(repo),
-        readme: this.svc.getRawReadmeDefault(repo)
+        readme: this.catalogueService.getRawReadmeDefault(repo)
       }))
     );
   }

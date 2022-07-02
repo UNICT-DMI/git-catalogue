@@ -1,6 +1,5 @@
-import { HttpClient } from '@angular/common/http';
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { faGithub } from '@fortawesome/free-brands-svg-icons';
 import {
   faBalanceScale,
@@ -13,11 +12,8 @@ import {
   faStar,
   faUserCircle,
 } from '@fortawesome/free-solid-svg-icons';
-import { Observable, of, forkJoin, ReplaySubject, Subscription } from 'rxjs';
-import { pluck, switchMap } from 'rxjs/operators';
-
-import { Repository } from 'src/@types';
-import { CatalogueService } from '../services/catalogue/catalogue.service';
+import { Observable } from 'rxjs';
+import { pluck } from 'rxjs/operators';
 import { RepoDetailsData } from '../services/resolvers/repo-details-resolver.service';
 
 @Component({
@@ -47,9 +43,7 @@ export class RepoDetailsComponent implements OnInit{
 
 
 
-  ngOnInit(): void {
-    
-  }
+  ngOnInit(): void {}
 
   
 }
