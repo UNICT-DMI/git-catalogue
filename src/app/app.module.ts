@@ -15,9 +15,10 @@ import { HomeComponent } from './home/home.component';
 import { HowtoComponent } from './howto/howto.component';
 import { MarkdownModule } from 'ngx-markdown';
 import { CatalogueComponent } from './catalogue/catalogue.component';
+import { EmojiFixupPipe } from './pipes/emoji-fixup.pipe';
 
 @NgModule({
-  declarations: [AppComponent, RepoComponent, RepoDetailsComponent, HomeComponent, HowtoComponent, CatalogueComponent],
+  declarations: [AppComponent, RepoComponent, RepoDetailsComponent, HomeComponent, HowtoComponent, CatalogueComponent, EmojiFixupPipe],
   imports: [
     FormsModule,
     BrowserModule,

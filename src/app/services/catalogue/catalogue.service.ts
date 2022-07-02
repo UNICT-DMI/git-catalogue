@@ -76,4 +76,12 @@ export class CatalogueService {
   get confTabsKeys(): string[] {
     return this.CONF && Object.keys(this.CONF?.tabs);
   }
+  
+  getRawReadmeDefault( repo: Repository ): Observable<string> {
+    return this.getRawReadme( repo.full_name, repo.default_branch );
+  }
+  
+  getRawReadme(repo: string, default_branch: string): Observable<string> {
+    return this.http.get(`https://raw.githubusercontent.com/${repo}/${default_branch}/README.md?time=${Date.now()}`, { responseType: 'text' });
+  }
 }

@@ -7,11 +7,17 @@ import { MarkdownModule } from 'ngx-markdown';
 import { HomeComponent } from './home/home.component';
 import { HowtoComponent } from './howto/howto.component';
 import { RepoDetailsComponent } from './repo-details/repo-details.component';
+import { RepoDetailsResolverService } from './services/resolvers/repo-details-resolver.service';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'home', component: HomeComponent },
-  { path: 'details/:id', component: RepoDetailsComponent },
+  { 
+    path: 'details/:id', 
+    component: RepoDetailsComponent,  
+    resolve: { data: RepoDetailsResolverService },
+    runGuardsAndResolvers: 'paramsChange'
+  },
   { path: 'how-to', component: HowtoComponent },
 ];
 

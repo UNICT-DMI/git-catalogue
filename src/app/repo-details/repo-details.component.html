@@ -1,62 +1,65 @@
 <a href="#/home"><fa-icon [icon]="faCaretLeft"></fa-icon> &nbsp; back to Catalogue</a>
 
-<div *ngIf="item | async as it" class="mt-3">
+<div *ngIf="data$ | async as data" class="mt-3">
   <div class="media">
     <img
-      [src]="'https://raw.githubusercontent.com/' + it.full_name + '/master/icon.png'"
-      alt="{{ it.fullName }}"
+      [src]="'https://raw.githubusercontent.com/' + data.repo.full_name + '/master/icon.png'"
+      alt="{{ data.repo.fullName }}"
       class="mr-3 logo-small logo"
       onerror="this.src = 'https://avatars.githubusercontent.com/u/25122687?s=200&v=4';"
     />
     <div class="media-body">
-      <h2 class="mt-0 mb-0">{{ it.name }}</h2>
+      <h2 class="mt-0 mb-0">{{ data.repo.name }}</h2>
       <p>
-        by <a href="https://github.com/{{ it.owner.login }}">{{ it.owner.login }}</a>
+        by <a href="https://github.com/{{ data.repo.owner.login }}">{{ data.repo.owner.login }}</a>
       </p>
     </div>
   </div>
 
   <div class="row">
     <div class="col-12 col-md-8">
-      <markdown [src]="'https://raw.githubusercontent.com/' + it.full_name + '/master/README.md'"></markdown>
+      <!--<markdown [src]="'https://raw.githubusercontent.com/' + data.repo.full_name + '/master/README.md'"></markdown>-->
+      <markdown>
+        {{ data.readme | emojiFixup }}
+      </markdown>
     </div>
     <div class="col-12 col-md-4">
       <div id="about">
-        <a class="btn btn-lg btn-success" target="_blank" href="{{ it.html_url }}/archive/{{ it.default_branch }}.zip"
+        <a class="btn btn-lg btn-success" target="_blank" href="{{ data.repo.html_url }}/archive/{{ data.repo.default_branch }}.zip"
           >Download <i class="fa fa-download"></i
         ></a>
 
         <h3 class="mt-3">About this repo</h3>
         <ul class="list-unstyled">
           <li>
-            <fa-icon [icon]="faGlobe"></fa-icon> Repo ID: <span class="float-right">{{ it.id }}</span>
+            <fa-icon [icon]="faGlobe"></fa-icon> Repo ID: <span class="float-right">{{ data.repo.id }}</span>
           </li>
           <li>
-            <fa-icon [icon]="faUserCircle"></fa-icon> Author: <span class="float-right">{{ it.owner.login }}</span>
+            <fa-icon [icon]="faUserCircle"></fa-icon> Author: <span class="float-right">{{ data.repo.owner.login }}</span>
           </li>
           <li>
             <fa-icon [icon]="faGithub"></fa-icon> Repo:
-            <a class="float-right" target="_blank" href="{{ it.html_url }}"
+            <a class="float-right" target="_blank" href="{{ data.repo.html_url }}"
               >View on Github <fa-icon [icon]="faExternalLinkAlt"></fa-icon
             ></a>
           </li>
           <li>
-            <fa-icon [icon]="faEye"></fa-icon> Watchers: <span class="float-right">{{ it.watchers_count }}</span>
+            <fa-icon [icon]="faEye"></fa-icon> Watchers: <span class="float-right">{{ data.repo.watchers_count }}</span>
           </li>
           <li>
-            <fa-icon [icon]="faStar"></fa-icon> Stars: <span class="float-right">{{ it.stargazers_count }}</span>
+            <fa-icon [icon]="faStar"></fa-icon> Stars: <span class="float-right">{{ data.repo.stargazers_count }}</span>
           </li>
           <li>
-            <fa-icon [icon]="faCodeBranch"></fa-icon> Forks: <span class="float-right">{{ it.forks_count }}</span>
+            <fa-icon [icon]="faCodeBranch"></fa-icon> Forks: <span class="float-right">{{ data.repo.forks_count }}</span>
           </li>
           <li>
-            <fa-icon [icon]="faClock"></fa-icon> Created: <span class="float-right">{{ it.created_at | amTimeAgo }}</span>
+            <fa-icon [icon]="faClock"></fa-icon> Created: <span class="float-right">{{ data.repo.created_at | amTimeAgo }}</span>
           </li>
           <li>
-            <fa-icon [icon]="faClock"></fa-icon> Last update: <span class="float-right">{{ it.updated_at | amTimeAgo }}</span>
+            <fa-icon [icon]="faClock"></fa-icon> Last update: <span class="float-right">{{ data.repo.updated_at | amTimeAgo }}</span>
           </li>
-          <li *ngIf="it.license">
-            <fa-icon [icon]="faBalanceScale"></fa-icon> License: <span class="float-right">{{ it.license.spdx_id }}</span>
+          <li *ngIf="data.repo.license">
+            <fa-icon [icon]="faBalanceScale"></fa-icon> License: <span class="float-right">{{ data.repo.license.spdx_id }}</span>
           </li>
         </ul>
       </div>

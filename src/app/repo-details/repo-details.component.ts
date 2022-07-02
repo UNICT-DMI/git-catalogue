@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ActivatedRoute, Params } from '@angular/router';
 import { faGithub } from '@fortawesome/free-brands-svg-icons';
 import {
   faBalanceScale,
@@ -13,15 +13,24 @@ import {
   faStar,
   faUserCircle,
 } from '@fortawesome/free-solid-svg-icons';
+import { Observable, of, forkJoin, ReplaySubject, Subscription } from 'rxjs';
+import { pluck, switchMap } from 'rxjs/operators';
+
+import { Repository } from 'src/@types';
 import { CatalogueService } from '../services/catalogue/catalogue.service';
+import { RepoDetailsData } from '../services/resolvers/repo-details-resolver.service';
 
 @Component({
   selector: 'app-repo-details',
   templateUrl: './repo-details.component.html',
   styleUrls: ['./repo-details.component.scss'],
 })
-export class RepoDetailsComponent implements OnInit {
-  constructor(private route: ActivatedRoute, private catalogueService: CatalogueService) {}
+export class RepoDetailsComponent implements OnInit{
+  constructor(private route: ActivatedRoute) {
+    this.data$ = route.data.pipe(
+      pluck('data')
+    );
+  }
 
   readonly faCaretLeft = faCaretLeft;
   readonly faGlobe = faGlobe;
@@ -34,11 +43,13 @@ export class RepoDetailsComponent implements OnInit {
   readonly faClock = faClock;
   readonly faBalanceScale = faBalanceScale;
 
-  id: number;
-  item;
+  data$: Observable<RepoDetailsData>;
+
+
 
   ngOnInit(): void {
-    this.id = this.route.snapshot.params.id;
-    this.item = this.catalogueService.getLocalRepo(this.id);
+    
   }
+
+  
 }
