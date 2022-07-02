@@ -14,7 +14,7 @@ export class EmojiFixupPipe implements PipeTransform {
     return map;
   })();
 
-  public static regex = /\:[a-z\-\+\_0-9]+\:/gim;
+  public static regex = /\:[a-zA-Z0-9\-\_]+\:/gim;
   transform( value: string ): string {
 
     return this.substitute(value);
