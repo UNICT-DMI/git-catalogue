@@ -25,8 +25,7 @@ export class EmojiFixupPipe implements PipeTransform {
     const matches = input.match(EmojiFixupPipe.regex) ?? [];
 
     for (const match of matches) {
-      const el = matches[match];
-      text = text.replace(el, EmojiFixupPipe.emojis.get(el) ?? el)
+      text = text.replace(match, EmojiFixupPipe.emojis.get(match) ?? match)
     }
     return text;
   }
