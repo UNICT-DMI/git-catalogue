@@ -21,7 +21,7 @@ import { RepoDetailsData } from '../services/resolvers/repo-details-resolver.ser
   templateUrl: './repo-details.component.html',
   styleUrls: ['./repo-details.component.scss'],
 })
-export class RepoDetailsComponent implements OnInit{
+export class RepoDetailsComponent{
   constructor(private route: ActivatedRoute) {
     this.data$ = route.data.pipe(
       pluck('data')
@@ -40,10 +40,5 @@ export class RepoDetailsComponent implements OnInit{
   readonly faBalanceScale = faBalanceScale;
 
   data$: Observable<RepoDetailsData>;
-
-
-
-  ngOnInit(): void {}
-
   
 }
