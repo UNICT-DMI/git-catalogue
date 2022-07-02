@@ -20,12 +20,12 @@ export class EmojiFixupPipe implements PipeTransform {
     return this.substitute(value);
   }
 
-  private substitute(input: string) {
+  private substitute(input: string): string {
     let text = input;
     const matches = input.match(EmojiFixupPipe.regex) ?? [];
 
-    for (let i = 0, L = matches.length; i < L; ++i) {
-      const el = matches[i];
+    for (const match of matches) {
+      const el = matches[match];
       text = text.replace(el, EmojiFixupPipe.emojis.get(el) ?? el)
     }
     return text;
