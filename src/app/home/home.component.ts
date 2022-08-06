@@ -4,13 +4,20 @@ import { faTelegram } from '@fortawesome/free-brands-svg-icons';
 import { faSearch, IconDefinition } from '@fortawesome/free-solid-svg-icons';
 import { CatalogueService } from '../services/catalogue/catalogue.service';
 import { Repository } from 'src/@types';
+import { MatTabChangeEvent } from '@angular/material/tabs';
+import { ActivatedRoute } from '@angular/router';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
 })
 export class HomeComponent {
-  constructor(public catalogueService: CatalogueService, public cdRef: ChangeDetectorRef) {}
+  constructor(
+    public catalogueService: CatalogueService,
+    public cdRef: ChangeDetectorRef,
+    private route: ActivatedRoute,
+    private location: Location) {}
 
   page = 0;
   search: string;
@@ -23,6 +30,35 @@ export class HomeComponent {
 
   onPageChange(page: PageEvent): void {
     this.page = page.pageIndex;
+  }
+
+  onTabChange(tab: MatTabChangeEvent): void {
+    const index = tab.index;
+    const tabName = Object.keys(this.catalogueService.CONF.tabs)[index];
+    const path = `/tab${this.catalogueService.CONF.tabs[tabName].path}`;
+    
+    if (this.location.path() !== path) {
+      this.location.go(path);
+    }
+  }
+
+
+  get tabIndex(): number {
+    const tabName = this.route.snapshot.paramMap.get('tab');
+    const paths = this.catalogueService.confTabPaths;
+    
+    if(!paths)
+      return -1;
+
+    return tabName ? paths.indexOf(`/${tabName}`) : 0;
+  }
+
+  get isCatalogueLoading(): boolean {
+    return this.catalogueService.isLoading;
+  }
+
+  getPathByTab(tab: string): string {
+    return this.catalogueService.CONF.tabs[tab].path;
   }
 
   currentPageItems(modules: { items: Repository[] }): Repository[] {

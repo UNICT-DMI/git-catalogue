@@ -4,22 +4,27 @@
   "pageSize": 6,
   "tabs": {
     "Projects": {
-      "org": "UNICT-DMI"
+      "org": "UNICT-DMI",
+      "path": "/projects"
     },
     "Telegram Bots": {
       "org": "UNICT-DMI",
-      "topic": "telegram-bot"
+      "topic": "telegram-bot",
+      "path": "/telegram-bots"
     },
     "UNICT": {
       "org": "UNICT-DMI",
-      "topic": "unict"
+      "topic": "unict",
+      "path": "/unict"
     },
     "DMI": {
       "org": "UNICT-DMI",
-      "topic": "dmi"
+      "topic": "dmi",
+      "path": "/dmi"
     },
     "Appunti": {
-      "topic": "unict-dmi-appunti"
+      "topic": "unict-dmi-appunti",
+      "path": "/appunti"
     }
   }
 }

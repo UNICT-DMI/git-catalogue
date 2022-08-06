@@ -8,4 +8,5 @@ export interface Config {
 export interface Tab {
   topic?: string;
   org?: string;
+  path: string;
 }
