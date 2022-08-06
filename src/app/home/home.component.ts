@@ -41,20 +41,17 @@ export class HomeComponent {
       this.location.go(path);
     }
   }
-
-
-  get tabIndex(): number {
-    const tabName = this.route.snapshot.paramMap.get('tab');
-    const paths = this.catalogueService.confTabPaths;
-    
-    if(!paths)
-      return -1;
-
-    return tabName ? paths.indexOf(`/${tabName}`) : 0;
-  }
-
+  
   get isCatalogueLoading(): boolean {
     return this.catalogueService.isLoading;
+  }
+
+  get tabIndex(): number {
+    if(this.isCatalogueLoading)
+      return -1;
+
+    const tabName = this.route.snapshot.paramMap.get('tab');
+    return tabName ? this.catalogueService.confTabPaths.indexOf(`/${tabName}`) : 0;
   }
 
   getPathByTab(tab: string): string {
