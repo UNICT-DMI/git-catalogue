@@ -41,21 +41,14 @@ export class HomeComponent {
       this.location.go(path);
     }
   }
-  
-  get isCatalogueLoading(): boolean {
-    return this.catalogueService.isLoading;
-  }
 
   get tabIndex(): number {
-    if(this.isCatalogueLoading)
-      return -1;
-
     const tabName = this.route.snapshot.paramMap.get('tab');
-    return tabName ? this.catalogueService.confTabPaths.indexOf(`/${tabName}`) : 0;
-  }
+    if(!tabName) {
+      return -1;
+    }
 
-  getPathByTab(tab: string): string {
-    return this.catalogueService.CONF.tabs[tab].path;
+    return this.catalogueService.getTabIndex(tabName);
   }
 
   currentPageItems(modules: { items: Repository[] }): Repository[] {

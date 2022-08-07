@@ -11,7 +11,6 @@ import { Config, Tab } from './catalogue.model';
 export class CatalogueService {
   CONF: Config;
   items$: Record<string, Observable<Repository>> = {};
-  isLoading: boolean = true;
 
   private configURL = 'assets/default.json';
 
@@ -22,7 +21,6 @@ export class CatalogueService {
       for (const k of Object.keys(this.CONF.tabs)) {
         this.items$[k] = this.getLocalItems(this.CONF.tabs[k]);
       }
-      this.isLoading = false;
     });
   }
 
@@ -81,6 +79,14 @@ export class CatalogueService {
 
   get confTabPaths(): string[] {
     return this.CONF && Object.values(this.CONF.tabs).map((tab) => tab.path);
+  }
+
+  getTabIndex(tabName: string): number {
+    if(!this.confTabPaths) {
+      return -1;
+    }
+    
+    return tabName ? this.confTabPaths.indexOf(`/${tabName}`) : 0;
   }
 
   getRawReadmeDefault( repo: Repository ): Observable<string> {
