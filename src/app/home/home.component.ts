@@ -5,7 +5,6 @@ import { faSearch, IconDefinition } from '@fortawesome/free-solid-svg-icons';
 import { CatalogueService } from '../services/catalogue/catalogue.service';
 import { Repository } from 'src/@types';
 import { MatTabChangeEvent } from '@angular/material/tabs';
-import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 
 @Component({
@@ -17,7 +16,6 @@ export class HomeComponent {
   constructor(
     public catalogueService: CatalogueService,
     public cdRef: ChangeDetectorRef,
-    private route: ActivatedRoute,
     private location: Location) {}
 
   page = 0;
