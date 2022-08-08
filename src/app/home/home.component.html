@@ -28,9 +28,9 @@
   </div>
 </div>
 
-<div class="row" *ngIf="tabIndex !== -1">
+<div class="row" *ngIf="catalogueService.tabIndex !== -1">
   <div class="col-12">
-    <mat-tab-group (focusChange)="page = 0" [selectedIndex]="tabIndex" (selectedTabChange)="onTabChange($event)">
+    <mat-tab-group (focusChange)="page = 0" [selectedIndex]="catalogueService.tabIndex" (selectedTabChange)="onTabChange($event)">
       <mat-tab *ngFor="let key of catalogueService.confTabsKeys" label="{{ key }}">
         <div *ngIf="catalogueService.items$[key] | async as items" class="mt-2">
           <div *ngFor="let item of currentPageItems(items)">

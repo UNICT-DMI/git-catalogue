@@ -11,6 +11,7 @@ import { Location } from '@angular/common';
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
+  providers: [CatalogueService],
 })
 export class HomeComponent {
   constructor(
@@ -40,15 +41,6 @@ export class HomeComponent {
     if (this.location.path() !== path) {
       this.location.go(path);
     }
-  }
-
-  get tabIndex(): number {
-    const tabName = this.route.snapshot.paramMap.get('tab');
-    if(!tabName) {
-      return -1;
-    }
-
-    return this.catalogueService.getTabIndex(tabName);
   }
 
   currentPageItems(modules: { items: Repository[] }): Repository[] {
