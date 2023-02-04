@@ -1,0 +1,30 @@
+{
+  "page": 1,
+  "perPage": 500,
+  "pageSize": 6,
+  "tabs": {
+    "Projects": {
+      "org": "UNICT-DMI",
+      "path": "/projects"
+    },
+    "Telegram Bots": {
+      "org": "UNICT-DMI",
+      "topic": "telegram-bot",
+      "path": "/telegram-bots"
+    },
+    "UNICT": {
+      "org": "UNICT-DMI",
+      "topic": "unict",
+      "path": "/unict"
+    },
+    "DMI": {
+      "org": "UNICT-DMI",
+      "topic": "dmi",
+      "path": "/dmi"
+    },
+    "Appunti": {
+      "topic": "unict-dmi-appunti",
+      "path": "/appunti"
+    }
+  }
+}
