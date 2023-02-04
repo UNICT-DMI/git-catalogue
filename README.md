@@ -1,27 +1,36 @@
 # Git Catalogue
 
-# [Live Demo](https://unict-dmi.github.io/git-catalogue/#/home)
+This is a generic project which allow to create a catalogue for your GitHub organization using the GitHub API.
 
-## Development server
+Example:
+- https://www.azerothcore.org/catalogue.html (the default version of the catalogue)
+- https://unict-dmi.github.io/git-catalogue/#/home (fork by another open-source community)
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
 
-## Code scaffolding
+## Development
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+This project is written with the Angular framework, to run it locally you can run:
 
-## Build
+```bash
+npm install
+npm start
+```
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+It should work smootly using:
 
-## Running unit tests
+```
+node v14.15.1
+npm 6.14.8
+```
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+Feel free to use it and create your fork, don't forget to create a PR about it.
 
-## Running end-to-end tests
+### TODO
+- make it more customizable, let any developer to change some specific page content without creating any git conflict
+- show all repositories in the catalogue ( https://github.com/azerothcore/git-catalogue/issues/91 )
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+### Credits
 
-## Further help
+- [Deku](https://github.com/deku) (original author of the [previous implementation](https://github.com/azerothcore/catalogue))
+- [Helias](https://github.com/Helias) (author and mantainer of the current catalogue version, contact me on Discord!)
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).

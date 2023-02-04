@@ -35,14 +35,13 @@ export class HomeComponent {
     const index = tab.index;
     const tabName = Object.keys(this.catalogueService.CONF.tabs)[index];
     const path = `/tab${this.catalogueService.CONF.tabs[tabName].path}`;
-    
     if (this.location.path() !== path) {
       this.location.go(path);
     }
   }
 
-  currentPageItems(modules: { items: Repository[] }): Repository[] {
-    let filteredItems = modules.items;
+  currentPageItems(modules: Repository[]): Repository[] {
+    let filteredItems = modules;
     if (!!this.search) {
       filteredItems = filteredItems.filter((item) => item.name.toLowerCase().indexOf(this.search.toLowerCase()) > -1);
     }
