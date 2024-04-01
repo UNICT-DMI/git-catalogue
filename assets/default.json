@@ -1,6 +1,6 @@
 {
   "page": 1,
-  "perPage": 500,
+  "perPage": 100,
   "pageSize": 6,
   "tabs": {
     "Projects": {
