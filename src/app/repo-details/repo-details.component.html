@@ -3,10 +3,10 @@
 <div *ngIf="data$ | async as data" class="mt-3">
   <div class="media">
     <img
-      [src]="'https://raw.githubusercontent.com/' + data.repo.full_name + '/master/icon.png'"
-      alt="{{ data.repo.fullName }}"
+      [src]="data.logo"
+      alt="{{ data.repo.full_name }}"
       class="mr-3 logo-small logo"
-      onerror="this.src = 'https://avatars.githubusercontent.com/u/25122687?s=200&v=4';"
+      (error)="this.data.logo = 'https://avatars0.githubusercontent.com/u/20147732?v=4'"
     />
     <div class="media-body">
       <h2 class="mt-0 mb-0">{{ data.repo.name }}</h2>

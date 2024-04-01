@@ -2,8 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Observable, of } from 'rxjs';
-import { map, reduce, tap } from 'rxjs/operators';
-import { Repository, RepositoriesPage } from 'src/@types';
+import { catchError, map, reduce, tap } from 'rxjs/operators';
+import { RepositoriesPage, Repository } from 'src/@types';
 import { Config, Tab } from './catalogue.model';
 
 @Injectable({
@@ -47,7 +47,7 @@ export class CatalogueService {
     };
 
     const pages$ = new Observable<Repository[]>((observer) => {
-      const emitItems = (page) => {
+      const fetchPage = (page) =>
         getPage(page)
           .pipe(
             map((res) => {
@@ -61,23 +61,22 @@ export class CatalogueService {
             observer.next(items);
             const hasNextPage = perPage * page < totalSize;
             if (hasNextPage) {
-              emitItems(page + 1);
+              fetchPage(page + 1);
             } else {
               observer.complete();
             }
           });
-      };
 
-      emitItems(1);
+      fetchPage(1);
     }).pipe(reduce((acc, val) => acc.concat(val), []));
 
-    return this.storable(pages$, key);
+    return this.cacheable(pages$, key);
   }
 
-  storable<T extends Repository | Repository[]>(obs: Observable<T>, key: string): Observable<T> {
+  cacheable<T extends Repository | Repository[]>(obs: Observable<T>, key: string): Observable<T> {
     return obs.pipe(
       tap({
-        next: (data: any) => {
+        next: (data: T) => {
           localStorage.setItem(key, JSON.stringify({ timeDate: new Date().getTime(), value: data }));
         },
         error: (err) => {
@@ -102,7 +101,7 @@ export class CatalogueService {
       return of(JSON.parse(item).value);
     }
 
-    return this.storable(this.http.get<Repository>(`https://api.github.com/repositories/${id}`), key);
+    return this.cacheable(this.http.get<Repository>(`https://api.github.com/repositories/${id}`), key);
   }
 
   get confTabsKeys(): string[] {
@@ -127,8 +126,18 @@ export class CatalogueService {
   }
 
   getRawReadme(repo: string, defaultBranch: string): Observable<string> {
-    return this.http.get(`https://raw.githubusercontent.com/${repo}/${defaultBranch}/README.md?time=${Date.now()}`, {
-      responseType: 'text',
-    });
+    return this.http
+      .get(`https://raw.githubusercontent.com/${repo}/${defaultBranch}/README.md?time=${Date.now()}`, {
+        responseType: 'text',
+      })
+      .pipe(
+        catchError(() =>
+          this.http
+            .get(`https://raw.githubusercontent.com/${repo}/${defaultBranch}/.github/README.md?time=${Date.now()}`, {
+              responseType: 'text',
+            })
+            .pipe(catchError(() => of('No README found'))),
+        ),
+      );
   }
 }

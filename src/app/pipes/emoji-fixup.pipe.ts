@@ -1,6 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
-import emojis from "../../assets/emoji_map.json";
+import emojis from '../../assets/emoji_map.json';
 
 @Pipe({
   name: 'emojiFixup'
@@ -25,7 +25,7 @@ export class EmojiFixupPipe implements PipeTransform {
     const matches = input.match(EmojiFixupPipe.regex) ?? [];
 
     for (const match of matches) {
-      text = text.replace(match, EmojiFixupPipe.emojis.get(match) ?? match)
+      text = text.replace(match, EmojiFixupPipe.emojis.get(match) ?? match);
     }
     return text;
   }

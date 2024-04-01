@@ -40,5 +40,5 @@ export class RepoDetailsComponent{
   readonly faBalanceScale = faBalanceScale;
 
   data$: Observable<RepoDetailsData>;
-  
+
 }

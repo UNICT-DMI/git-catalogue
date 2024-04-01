@@ -1,32 +1,38 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
-import { forkJoin, Observable, of } from 'rxjs';
-import { catchError, switchMap } from 'rxjs/operators';
+import { Observable, forkJoin, of } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 import { Repository } from 'src/@types';
 import { CatalogueService } from '../catalogue/catalogue.service';
 
 export type RepoDetailsData = {
   repo: Repository;
-  readme: string
+  readme: string;
+  logo: string;
 };
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class RepoDetailsResolverService implements Resolve<RepoDetailsData> {
+  constructor(private readonly catalogueService: CatalogueService) {}
 
-  constructor( private readonly catalogueService: CatalogueService ) { }
-
-  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): RepoDetailsData | Observable<RepoDetailsData> | Promise<RepoDetailsData> {
+  resolve(
+    route: ActivatedRouteSnapshot,
+    state: RouterStateSnapshot,
+  ): RepoDetailsData | Observable<RepoDetailsData> | Promise<RepoDetailsData> {
     const id = route.params.id;
 
     const repo$ = this.catalogueService.getLocalRepo(id);
 
     return repo$.pipe(
-      switchMap( (repo) => forkJoin({
-        repo: of(repo),
-        readme: this.catalogueService.getRawReadmeDefault(repo).pipe(catchError ((error) => of(`:no_entry: ${error.status}`)))
-      }))
+      switchMap((repo) =>
+        forkJoin({
+          repo: of(repo),
+          readme: this.catalogueService.getRawReadmeDefault(repo),
+          logo: of(`https://raw.githubusercontent.com/${repo.full_name}/master/icon.png`),
+        }),
+      ),
     );
   }
 }

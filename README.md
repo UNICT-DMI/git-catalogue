@@ -3,9 +3,9 @@
 This is a generic project which allow to create a catalogue for your GitHub organization using the GitHub API.
 
 Example:
+
 - https://www.azerothcore.org/catalogue.html (the default version of the catalogue)
 - https://unict-dmi.github.io/git-catalogue/#/home (fork by another open-source community)
-
 
 ## Development
 
@@ -26,11 +26,12 @@ npm 6.14.8
 Feel free to use it and create your fork, don't forget to create a PR about it.
 
 ### TODO
+
 - make it more customizable, let any developer to change some specific page content without creating any git conflict
-- show all repositories in the catalogue ( https://github.com/azerothcore/git-catalogue/issues/91 )
+- add github action to verify the build
+- upgrade to last angular version and make this project compatible with node20
 
 ### Credits
 
 - [Deku](https://github.com/deku) (original author of the [previous implementation](https://github.com/azerothcore/catalogue))
 - [Helias](https://github.com/Helias) (author and mantainer of the current catalogue version, contact me on Discord!)
-
