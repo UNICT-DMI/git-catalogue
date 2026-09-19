@@ -1,0 +1,81 @@
+name: E2E
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: ['**']
+
+jobs:
+  test-e2e:
+    runs-on: ubuntu-latest
+    env:
+      CI: true
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Show Node/npm versions
+        run: |
+          node -v
+          npm -v
+
+      - name: Setup Chrome
+        uses: browser-actions/setup-chrome@v1
+
+      - name: Set Playwright Chrome executable for CI
+        run: echo "PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH=/usr/bin/google-chrome" >> $GITHUB_ENV
+
+      - name: Cache npm
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-npm-
+
+      - name: Install dependencies
+        run: npm ci --no-audit --no-fund
+
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps chromium
+
+      - name: Prepare E2E config and data fixtures
+        run: |
+          mkdir -p src/assets/data
+          cat > src/assets/config.json << 'JSON'
+          {
+            "perPage": 50,
+            "pageSize": 8,
+            "usePreGeneratedFile": true,
+            "preGeneratedFileUrl": "assets/data/catalogue.json",
+            "globalSearch": false,
+            "tabs": {
+              "All Modules": {
+                "topic": "e2e-topic",
+                "org": "e2e-org",
+                "path": "/module"
+              }
+            }
+          }
+          JSON
+          cat > src/assets/data/catalogue.json << 'JSON'
+          {
+            "organizations": {
+              "e2e-org": {
+                "e2e-topic": []
+              }
+            }
+          }
+          JSON
+
+      - name: Run unit tests (headless)
+        run: npm run test-ci -- --browsers=ChromeHeadless
+
+      - name: Run E2E tests (Playwright)
+        run: npm run e2e

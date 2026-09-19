@@ -13,11 +13,17 @@
         class="form-control"
         placeholder="Search an item in the catalogue"
         [(ngModel)]="search"
-        (ngModelChange)="refresh()"
+        (ngModelChange)="onSearchChange($event)"
         aria-label="Search"
         aria-describedby="search"
       />
     </div>
+
+    <label for="sort">Sort items by:</label>
+
+    <select id="sort" class="form-control mb-3" [(ngModel)]="sort" (ngModelChange)="onSortChange($event)" aria-label="Sort">
+      <option *ngFor="let option of sortOptions" [value]="option.key">{{ option.label }}</option>
+    </select>
   </div>
 
   <div class="col-6">
@@ -30,7 +36,7 @@
 
 <div class="row" *ngIf="catalogueService.tabIndex !== -1">
   <div class="col-12">
-    <mat-tab-group (focusChange)="page = 0" [selectedIndex]="catalogueService.tabIndex" (selectedTabChange)="onTabChange($event)">
+    <mat-tab-group (focusChange)="resetPage()" [selectedIndex]="catalogueService.tabIndex" (selectedTabChange)="onTabChange($event)">
       <mat-tab *ngFor="let key of catalogueService.confTabsKeys" label="{{ key }}">
         <div *ngIf="catalogueService.items$[key] | async as items" class="mt-2">
           <div *ngFor="let item of currentPageItems(items)">
@@ -39,6 +45,7 @@
               [name]="item.name"
               [stars]="item.stargazers_count"
               [created]="item.created_at"
+              [updated]="item.pushed_at"
               [description]="item.description"
               [fullName]="item.full_name"
             >
@@ -47,7 +54,7 @@
 
           <mat-paginator
             [pageIndex]="page"
-            [length]="items.length"
+            [length]="filteredLength(items)"
             [pageSize]="catalogueService.CONF.pageSize"
             (page)="onPageChange($event)"
             [hidePageSize]="true"

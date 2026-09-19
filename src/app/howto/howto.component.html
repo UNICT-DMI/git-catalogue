@@ -1,41 +1,154 @@
 <a href="#/home"><fa-icon [icon]="faCaretLeft"></fa-icon> &nbsp; back to Catalogue</a>
 
-<h2 class="mt-3">How to add an item in the catalogue</h2>
+<h2 class="mt-3">How to add your repository to the catalogue</h2>
 
-<p>In order to add your repository in the catalogue, you need to add the github topic related to each tab.</p>
+<div class="alert alert-success">
+  <h5><i class="fas fa-info-circle"></i> Quick Start</h5>
+  <p>To add your repository to this catalogue, you need to <strong>add specific GitHub topics</strong> to your repository. These topics act as tags that help organize repositories into different categories.</p>
+</div>
 
-<h4>Tabs & topics</h4>
-<ul>
-  <li *ngFor="let tab of catalogueService.CONF?.tabs | keyvalue">
-    <strong>{{ tab.key }}:</strong> {{ tab.value.topic }}
+<h4><i class="fas fa-tags"></i> Step 1: Add GitHub Topics to Your Repository</h4>
+
+<div class="alert alert-info">
+  <p><strong>What are GitHub topics?</strong> Topics are labels that help categorize your repository. You can add them in your repository settings on GitHub.</p>
+  <p><a href="https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/classifying-your-repository-with-topics" target="_blank" class="btn btn-sm btn-outline-primary">
+    <i class="fas fa-external-link-alt"></i> Learn how to add topics to your repository
+  </a></p>
+</div>
+
+<h5>Available Categories & Required Topics:</h5>
+<div class="row">
+  <div class="col-md-6" *ngFor="let tab of catalogueService.CONF?.tabs | keyvalue">
+    <div class="card mb-3">
+      <div class="card-body">
+        <h6 class="card-title">{{ tab.key }}</h6>
+        <p class="card-text">
+          <strong>Required topic:</strong> 
+          <code class="bg-light p-1 rounded">{{ tab.value.topic }}</code>
+        </p>
+        <small class="text-muted">Organization: {{ tab.value.org || 'default-org' }}</small>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="alert alert-primary">
+  <h5><i class="fas fa-globe"></i> Global Repository Discovery</h5>
+  <p>This catalogue searches <strong>globally across all of GitHub</strong> for repositories with the required topics. This means:</p>
+  <ul class="mb-0">
+    <li>Your repository can be in <strong>any GitHub organization or personal account</strong></li>
+    <li>You don't need to be part of any specific GitHub organization</li>
+    <li>Simply adding the correct topic is enough to get your repository included</li>
+    <li>The catalogue refreshes automatically every 30 minutes</li>
+  </ul>
+</div>
+
+<h4><i class="fas fa-file-alt"></i> Step 2: Prepare Your Repository</h4>
+
+<h5>Required Information (add to your README.md):</h5>
+<ul class="list-group mb-3">
+  <li class="list-group-item">
+    <strong>Name:</strong> Clear name of your module/script/tool
+    <small class="text-muted d-block">Example: "Player Statistics Module"</small>
+  </li>
+  <li class="list-group-item">
+    <strong>Description:</strong> Brief description that will appear in the catalogue
+    <small class="text-muted d-block">This should be in your repository's description field on GitHub</small>
+  </li>
+  <li class="list-group-item">
+    <strong>Author:</strong> Your username or the original author if this is a fork
+    <small class="text-muted d-block">Important for proper attribution</small>
+  </li>
+  <li class="list-group-item">
+    <strong>Installation Instructions:</strong> How to install and configure your module
+    <small class="text-muted d-block">Make it easy for users to get started</small>
+  </li>
+  <li class="list-group-item">
+    <strong>License:</strong> The license under which you're releasing your code
+    <small class="text-muted d-block">Recommended: GNU Affero General Public License v3.0</small>
   </li>
 </ul>
 
-<h4>Add these information in your project README</h4>
+<h4><i class="fas fa-star"></i> Step 3: Enhance Your Repository (Recommended)</h4>
+
+<div class="accordion" id="enhancementAccordion">
+  <div class="card">
+    <div class="card-header" id="readmeHeading">
+      <h2 class="mb-0">
+        <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#readmeCollapse">
+          <i class="fas fa-book"></i> Complete README.md
+        </button>
+      </h2>
+    </div>
+    <div id="readmeCollapse" class="collapse" data-parent="#enhancementAccordion">
+      <div class="card-body">
+        <p>A comprehensive README.md file will be displayed on your module's detail page. Include:</p>
+        <ul>
+          <li>Detailed description of features</li>
+          <li>Screenshots or examples</li>
+          <li>Installation and configuration steps</li>
+          <li>Requirements and compatibility</li>
+          <li>Troubleshooting section</li>
+        </ul>
+        <a href="https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-readmes" target="_blank" class="btn btn-sm btn-outline-primary">
+          <i class="fas fa-external-link-alt"></i> GitHub README Guide
+        </a>
+      </div>
+    </div>
+  </div>
+  
+  <div class="card">
+    <div class="card-header" id="iconHeading">
+      <h2 class="mb-0">
+        <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#iconCollapse">
+          <i class="fas fa-image"></i> Custom Icon
+        </button>
+      </h2>
+    </div>
+    <div id="iconCollapse" class="collapse" data-parent="#enhancementAccordion">
+      <div class="card-body">
+        <p>Add an <code>icon.png</code> file in your repository root to customize your module's appearance.</p>
+        <ul>
+          <li>Recommended size: 64x64 pixels or larger</li>
+          <li>Format: PNG with transparent background</li>
+          <li>Keep it simple and recognizable</li>
+        </ul>
+        <small class="text-muted">If no icon is provided, the repository owner's avatar will be used.</small>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header" id="bestPracticesHeading">
+      <h2 class="mb-0">
+        <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#bestPracticesCollapse">
+          <i class="fas fa-check-circle"></i> Best Practices
+        </button>
+      </h2>
+    </div>
+    <div id="bestPracticesCollapse" class="collapse" data-parent="#enhancementAccordion">
+      <div class="card-body">
+        <ul>
+          <li><strong>Configuration options:</strong> Provide extensive configuration to avoid code modifications</li>
+          <li><strong>Database patches:</strong> Use db_assembler for SQL patches if applicable</li>
+          <li><strong>Code quality:</strong> Follow standard coding best practices</li>
+          <li><strong>Documentation:</strong> Include inline comments and documentation</li>
+          <li><strong>Version control:</strong> Use proper .gitattributes and .gitignore files</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<h4><i class="fas fa-rocket"></i> Step 4: Submit Your Repository</h4>
+
+<div class="alert alert-warning">
+  <h5><i class="fas fa-clock"></i> Processing Time</h5>
+  <p>After adding the required topics to your repository, it may take up to <strong>30 minutes</strong> for your repository to appear in the catalogue, as the data is updated periodically.</p>
+</div>
+
+  <h4><i class="fas fa-question-circle"></i> Need Help?</h4>
+<p>If you have any questions or need assistance, feel free to reach out:</p>
 <ul>
-  <li><b>Name:</b> &nbsp; <i>name of your script.</i></li>
-  <li><b>Author:</b> &nbsp; <i>username of the original author (in case it's forked into an organization).</i></li>
-  <li><b>Repository:</b> &nbsp; <i>link to the GitHub repository.</i></li>
-  <li><b>Download:</b> &nbsp; <i>link to download the sources as .zip (take it from GitHub).</i></li>
-  <li><b>License:</b> &nbsp; <i>license used to release the code.</i></li>
-</ul>
-
-<h4>Description</h4>
-
-<p>Give a complete description of what does the script and how it does it.</p>
-
-<h4>Optional / Recommended</h4>
-<ul>
-  <li>
-    Add a <code>README.md</code> in the root folder with a complete description of your script. It will be shown in the details page of the
-    catalogue.
-  </li>
-  <li>Add an <code>icon.png</code> in the root folder. It will be shown in the script list and details page of the catalogue.</li>
-  <li>Use the <code>db_assembler</code> to include your SQL patches.</li>
-  <li>Follow best practices from the skeleton (.gitattributes, .gitkeep etc...)</li>
-  <li>
-    Give the user the biggest amount of options for configuration possible. It reduces the need to modify the code because "something
-    doesn't work as I would like to".
-  </li>
-  <li>Use the GNU Affero General Public License v3.0.</li>
+  <li><a href="https://discord.com/invite/NjCfDwrK?utm_source=Discord%20Widget&utm_medium=Connect" target="_blank">Discord Community</a></li>
 </ul>

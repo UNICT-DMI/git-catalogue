@@ -1,0 +1,8 @@
+{
+  "name": "fetch-catalogue",
+  "version": "1.0.0",
+  "description": "Fetches GitHub repositories for catalogue generation",
+  "dependencies": {
+    "node-fetch": "^2.7.0"
+  }
+}

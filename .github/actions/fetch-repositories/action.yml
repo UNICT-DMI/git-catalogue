@@ -1,0 +1,64 @@
+name: 'Fetch Repository Catalogue'
+description: 'Fetches GitHub repositories by topics and generates catalogue data'
+inputs:
+  organizations:
+    description: 'JSON array of organizations to fetch from'
+    required: true
+    default: '["azerothcore"]'
+  topics:
+    description: 'JSON object mapping organizations to their topics'
+    required: true
+    default: '{"azerothcore": ["azerothcore-module", "azerothcore-tools", "azerothcore-lua", "azerothcore-sql"]}'
+  global-search:
+    description: 'Whether to search globally across GitHub (true) or restrict to specified organizations (false)'
+    default: 'true'
+  output-path:
+    description: 'Path where to save the generated JSON file'
+    required: true
+    default: 'data/catalogue.json'
+  per-page:
+    description: 'Results per page for GitHub API (max 100)'
+    default: '100'
+  max-retries:
+    description: 'Maximum retry attempts for failed requests'
+    default: '3'
+  rate-limit-delay:
+    description: 'Delay in seconds between requests to avoid rate limiting'
+    default: '1'
+  token:
+    description: 'GitHub token for API access'
+    required: true
+outputs:
+  total-repos:
+    description: 'Total number of repositories fetched'
+    value: ${{ steps.fetch.outputs.total-repos }}
+  output-file:
+    description: 'Path to the generated JSON file'
+    value: ${{ inputs.output-path }}
+runs:
+  using: 'composite'
+  steps:
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+    
+    - name: Install dependencies
+      shell: bash
+      run: |
+        cd ${{ github.action_path }}
+        npm install
+    
+    - name: Fetch catalogue data
+      id: fetch
+      shell: bash
+      run: node ${{ github.action_path }}/fetch-catalogue.js
+      env:
+        GITHUB_TOKEN: ${{ inputs.token }}
+        ORGANIZATIONS: ${{ inputs.organizations }}
+        TOPICS: ${{ inputs.topics }}
+        GLOBAL_SEARCH: ${{ inputs.global-search }}
+        OUTPUT_PATH: ${{ inputs.output-path }}
+        PER_PAGE: ${{ inputs.per-page }}
+        MAX_RETRIES: ${{ inputs.max-retries }}
+        RATE_LIMIT_DELAY: ${{ inputs.rate-limit-delay }}
