@@ -1,0 +1,61 @@
+name: Test Fetch Repositories Action
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/actions/fetch-repositories/**'
+  pull_request:
+    paths:
+      - '.github/actions/fetch-repositories/**'
+
+jobs:
+  test-action:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Test Fetch Repositories Action
+        id: test-fetch
+        uses: ./.github/actions/fetch-repositories
+        with:
+          organizations: '["azerothcore"]'
+          topics: '{"azerothcore": ["azerothcore-module"]}'
+          output-path: 'test-output.json'
+          per-page: '10'
+          max-retries: '2'
+          rate-limit-delay: '1'
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Verify Output
+        run: |
+          echo "Total repositories fetched: ${{ steps.test-fetch.outputs.total-repos }}"
+          
+          if [ -f "test-output.json" ]; then
+            echo "✅ Output file created successfully"
+            echo "File size: $(du -h test-output.json | cut -f1)"
+            
+            # Validate JSON structure (no generated_at by design)
+            # Expect top-level keys: organizations (object) and global_search (boolean)
+            if jq -e 'has("organizations") and (.organizations|type=="object") and has("global_search")' test-output.json > /dev/null; then
+              echo "✅ JSON structure is valid"
+            else
+              echo "❌ JSON structure is invalid"
+              exit 1
+            fi
+            
+            # Show sample content
+            echo "Sample content:"
+            jq '.organizations | keys' test-output.json
+          else
+            echo "❌ Output file was not created"
+            exit 1
+          fi
+
+      - name: Upload Test Results
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-catalogue-output
+          path: test-output.json
+          retention-days: 7

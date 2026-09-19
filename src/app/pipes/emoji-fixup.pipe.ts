@@ -3,7 +3,8 @@ import { Pipe, PipeTransform } from '@angular/core';
 import emojis from '../../assets/emoji_map.json';
 
 @Pipe({
-  name: 'emojiFixup'
+    name: 'emojiFixup',
+    standalone: false
 })
 export class EmojiFixupPipe implements PipeTransform {
   static emojis = (() => {

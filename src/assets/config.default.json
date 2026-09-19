@@ -2,6 +2,8 @@
   "page": 1,
   "perPage": 100,
   "pageSize": 6,
+  "usePreGeneratedFile": false,
+  "globalSearch": false,
   "tabs": {
     "Projects": {
       "org": "UNICT-DMI",
@@ -23,8 +25,10 @@
       "path": "/dmi"
     },
     "Appunti": {
+      "org": "UNICT-DMI",
       "topic": "unict-dmi-appunti",
-      "path": "/appunti"
+      "path": "/appunti",
+      "globalSearch": true
     }
   }
 }

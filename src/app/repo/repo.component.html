@@ -9,7 +9,10 @@
     <h4 class="mt-0 mb-0">
       <a href="#/details/{{ id }}">{{ name }}</a>
     </h4>
-    <span class="text-muted text-tiny"> <fa-icon [icon]="faStar"></fa-icon> {{ stars }} | Created {{ created | amTimeAgo }} </span>
+    <span class="text-muted text-tiny">
+      <fa-icon [icon]="faStar"></fa-icon> {{ stars }} | Created {{ created | amTimeAgo }}
+      <ng-container *ngIf="updated"> | Updated {{ updated | amTimeAgo }}</ng-container>
+    </span>
     <p>{{ description }}</p>
   </div>
 </div>

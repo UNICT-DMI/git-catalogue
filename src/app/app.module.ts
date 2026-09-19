@@ -1,10 +1,10 @@
-import { NgModule } from '@angular/core';
+import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { AppComponent } from './app.component';
 import { RepoComponent } from './repo/repo.component';
-import { MomentModule } from 'angular2-moment';
-import { HttpClientModule } from '@angular/common/http';
+import { MomentModule } from 'ngx-moment';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatTabsModule } from '@angular/material/tabs';
@@ -16,21 +16,40 @@ import { HowtoComponent } from './howto/howto.component';
 import { MarkdownModule } from 'ngx-markdown';
 import { CatalogueComponent } from './catalogue/catalogue.component';
 import { EmojiFixupPipe } from './pipes/emoji-fixup.pipe';
+import { AppConfigService } from './services/config/app-config.service';
+import { APP_CONFIG } from './services/config/config.token';
 
-@NgModule({
-  declarations: [AppComponent, RepoComponent, RepoDetailsComponent, HomeComponent, HowtoComponent, CatalogueComponent, EmojiFixupPipe],
-  imports: [
-    FormsModule,
-    BrowserModule,
-    AppRoutingModule,
-    FontAwesomeModule,
-    MomentModule,
-    HttpClientModule,
-    BrowserAnimationsModule,
-    MatPaginatorModule,
-    MatTabsModule,
-    MarkdownModule.forRoot(),
-  ],
-  bootstrap: [AppComponent],
-})
+export function initAppConfig(configService: AppConfigService) {
+  // Angular 11 APP_INITIALIZER waits for Promise (not Observable)
+  return () => configService.load().toPromise();
+}
+
+export function provideConfig(configService: AppConfigService) {
+  return configService.getConfig();
+}
+
+@NgModule({ declarations: [AppComponent, RepoComponent, RepoDetailsComponent, HomeComponent, HowtoComponent, CatalogueComponent, EmojiFixupPipe],
+    bootstrap: [AppComponent], imports: [FormsModule,
+        BrowserModule,
+        AppRoutingModule,
+        FontAwesomeModule,
+        MomentModule,
+        BrowserAnimationsModule,
+        MatPaginatorModule,
+        MatTabsModule,
+        MarkdownModule.forRoot()], providers: [
+        AppConfigService,
+        {
+            provide: APP_INITIALIZER,
+            useFactory: initAppConfig,
+            deps: [AppConfigService],
+            multi: true
+        },
+        {
+            provide: APP_CONFIG,
+            useFactory: provideConfig,
+            deps: [AppConfigService]
+        },
+        provideHttpClient(withInterceptorsFromDi()),
+    ] })
 export class AppModule {}

@@ -2,3 +2,11 @@
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+/* Ensure images inside README markdown scale correctly.
+   Using a global rule so it applies to content rendered via innerHTML/ngx-markdown
+   which doesn't receive Angular's emulated encapsulation attributes. */
+#readme-markdown img {
+  max-width: 100%;
+  height: auto;
+}
