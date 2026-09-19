@@ -22,6 +22,7 @@ export const SORT_OPTIONS: { key: SortKey; label: string }[] = [
 @Component({
     selector: 'app-home',
     templateUrl: './home.component.html',
+    providers: [CatalogueService],
     standalone: false
 })
 export class HomeComponent {
