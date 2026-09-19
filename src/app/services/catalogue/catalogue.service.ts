@@ -112,14 +112,40 @@ export class CatalogueService {
   }
 
   private cacheRepos(key: string, repos: Repository[]) {
-    localStorage.setItem(key, JSON.stringify({ timeDate: new Date().getTime(), value: repos }));
+    this.setCache(key, repos);
+  }
+
+  // Big tabs (e.g. a global topic search) can go over the localStorage quota: free our entries
+  // and retry, else skip caching, a failing setItem would error the whole stream
+  private setCache(key: string, value: Repository | Repository[]): void {
+    const entry = JSON.stringify({ timeDate: new Date().getTime(), value });
+    try {
+      localStorage.setItem(key, entry);
+    } catch {
+      this.clearCatalogueCache();
+      try {
+        localStorage.setItem(key, entry);
+      } catch (err) {
+        console.warn(`Skipping cache for ${key}`, err);
+      }
+    }
+  }
+
+  // Only our keys, the origin is shared with the other GitHub Pages sites of the org
+  private clearCatalogueCache(): void {
+    const tabKeys = Object.values(this.CONF.tabs).map(({ org = 'default-org', topic = '' }) => `${org}-${topic}`);
+    for (const key of Object.keys(localStorage)) {
+      if (key.startsWith('repo-') || tabKeys.includes(key)) {
+        localStorage.removeItem(key);
+      }
+    }
   }
 
   cacheable<T extends Repository | Repository[]>(obs: Observable<T>, key: string): Observable<T> {
     return obs.pipe(
       tap({
         next: (data: T) => {
-          localStorage.setItem(key, JSON.stringify({ timeDate: new Date().getTime(), value: data }));
+          this.setCache(key, data);
         },
         error: (err) => {
           console.error(err);
@@ -148,7 +174,7 @@ export class CatalogueService {
       const cachedRepo = this.findRepoInTabCaches(id);
       if (cachedRepo) {
         const normalized = this.normalizeRepo(cachedRepo);
-        localStorage.setItem(key, JSON.stringify({ timeDate: new Date().getTime(), value: normalized }));
+        this.setCache(key, normalized);
         return of(normalized);
       }
 
@@ -160,12 +186,12 @@ export class CatalogueService {
             throw new Error('Repo not found in pre-generated data');
           }
           const normalized = this.normalizeRepo(repo);
-          localStorage.setItem(key, JSON.stringify({ timeDate: new Date().getTime(), value: normalized }));
+          this.setCache(key, normalized);
           return normalized;
         }),
         // If anything fails, fall back to API
         catchError(() => this.http.get<Repository>(`https://api.github.com/repositories/${id}`)),
-        tap((repo) => localStorage.setItem(key, JSON.stringify({ timeDate: new Date().getTime(), value: repo })))
+        tap((repo) => this.setCache(key, repo))
       );
     }
 
